@@ -7,7 +7,7 @@ services:
     build: liferay
     deploy:
       limits:
-          memory: 1G
+          memory: 1000M
     ports:
       - "38085:8080"
    #   - "11311:11311"
@@ -25,7 +25,7 @@ services:
     build: elasticsearch
     deploy:
       limits:
-          memory: 1G
+          memory: 1000M
     #ports:
     #  - "9200:9200"
     # - "9300:9300"
