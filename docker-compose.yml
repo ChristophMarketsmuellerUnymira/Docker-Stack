@@ -4,12 +4,8 @@ services:
   # Liferay
   liferay:
    image: chris-testliferay
-   # deploy:
-   #   limits:
-   #       memory: 1000M
     ports:
       - "38085:8080"
-   #   - "11311:11311"
     volumes:
       - ./liferay/mount:/etc/liferay/mount
     environment:
@@ -21,12 +17,6 @@ services:
   # Elasticsearch
   elasticsearch:
     image: christ-testelastic
-    #deploy:
-    #  limits:
-    #      memory: 1000M
-    #ports:
-    #  - "9200:9200"
-    # - "9300:9300"
     volumes:
       - ./elasticsearch/data/:/usr/share/elasticsearch/data/
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
