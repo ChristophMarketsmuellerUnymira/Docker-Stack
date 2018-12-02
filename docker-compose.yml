@@ -5,7 +5,9 @@ services:
   liferay:
     container_name: liferay-chris-test
     build: liferay
-    mem_limit: 1g
+    deploy:
+      limits:
+          memory: 1G
     ports:
       - "38085:8080"
    #   - "11311:11311"
@@ -21,7 +23,9 @@ services:
   elasticsearch:
     container_name: elasticsearch-chris-test
     build: elasticsearch
-    mem_limit: 1g
+    deploy:
+      limits:
+          memory: 1G
     #ports:
     #  - "9200:9200"
     # - "9300:9300"
