@@ -1,0 +1,47 @@
+FROM ustst047.usu.usu.grp/centos-usu
+
+ENV PG_VERSION 9.4
+ENV PGVERSION 94
+
+# Set the environment variables
+ENV HOME /var/lib/pgsql
+ENV PGDATA /var/lib/pgsql/9.4/data
+
+RUN rpm -vih https://download.postgresql.org/pub/repos/yum/$PG_VERSION/redhat/rhel-7-x86_64/pgdg-centos$PGVERSION-$PG_VERSION-2.noarch.rpm && \
+    yum install -y sudo \
+    pwgen \
+    postgresql$PGVERSION \
+    postgresql$PGVERSION-server \
+    postgresql$PGVERSION-contrib && \
+    yum clean all
+
+ # Copy
+COPY data/postgresql-setup /usr/pgsql-$PG_VERSION/bin/postgresql$PGVERSION-setup
+
+# Working directory
+WORKDIR /var/lib/pgsql
+
+# Run initdb
+RUN chmod +x /usr/pgsql-$PG_VERSION/bin/postgresql$PGVERSION-setup && \
+	/usr/pgsql-$PG_VERSION/bin/postgresql$PGVERSION-setup initdb
+
+
+# Copy config file
+COPY data/postgresql.conf /var/lib/pgsql/$PG_VERSION/data/postgresql.conf
+COPY data/pg_hba.conf /var/lib/pgsql/$PG_VERSION/data/pg_hba.conf
+COPY data/postgresql.sh /usr/local/bin/postgresql.sh
+
+# Change own user
+RUN chown -R postgres:postgres /var/lib/pgsql/$PG_VERSION/data/* && \
+    usermod -G wheel postgres && \
+    sed -i 's/.*requiretty$/#Defaults requiretty/' /etc/sudoers && \
+    chmod +x /usr/local/bin/postgresql.sh
+
+
+# Set username
+USER postgres
+
+# Run PostgreSQL Server
+CMD ["/bin/bash", "/usr/local/bin/postgresql.sh"]
+
+# From https://github.com/zokeber/docker-postgresql/blob/master/data/pg_hba.conf

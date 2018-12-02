@@ -1,0 +1,64 @@
+version: "2.1"
+services:
+
+  # Liferay
+  liferay:
+    container_name: liferay-chris-test
+    build: liferay
+    mem_limit: 1g
+    ports:
+      - "38085:8080"
+   #   - "11311:11311"
+    volumes:
+      - $(pwd)/liferay/mount:/etc/liferay/mount
+    environment:
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL=jdbc:postgresql://postgres:5432/lportal
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME=postgres
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD=postgres
+      - LIFERAY_EDITOR_PERIOD_WYSIWYG_PERIOD_DEFAULT=ckeditor
+
+  # Elasticsearch
+  elasticsearch:
+    container_name: elasticsearch-chris-test
+    build: elasticsearch
+    mem_limit: 1g
+    #ports:
+    #  - "9200:9200"
+    # - "9300:9300"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - $(pwd)/elasticsearch/data/:/usr/share/elasticsearch/data/
+      - $(pwd)/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - $(pwd)/elasticsearch/config/logging.yml:/usr/share/elasticsearch/config/logging.yml
+      - $(pwd)/elasticsearch/config/userdict_ja.txt:/usr/share/elasticsearch/config/userdict_ja.txt
+      - $(pwd)/elasticsearch/logs/:/var/log/elasticsearch/
+    environment:
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - xpack.graph.enabled=false
+      - xpack.ml.enabled=false
+      - xpack.monitoring.enabled=true
+      - xpack.watcher.enabled=false
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.1.4
+    ports:
+      - "5601:5601"
+    environment:
+      - xpack.security.enabled=false
+  
+  # Postgres
+  postgres:
+    container_name: postgres-chris-test
+    build: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+    #  context: $(pwd)/postgres
+   # ports:
+   #   - "35432:5432"
+  #  volumes:
+   #   - christ-test:/var/lib/postgresql/data
