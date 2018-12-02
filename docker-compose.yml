@@ -3,7 +3,7 @@ services:
 
   # Liferay
   liferay:
-    container_name: liferay-chris-test
+    #container_name: liferay-chris-test
     build: liferay
    # deploy:
    #   limits:
@@ -21,7 +21,7 @@ services:
 
   # Elasticsearch
   elasticsearch:
-    container_name: elasticsearch-chris-test
+    #container_name: elasticsearch-chris-test
     build: elasticsearch
     #deploy:
     #  limits:
@@ -47,13 +47,13 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:6.1.4
     ports:
-      - "5601:5601"
+      - "35601:5601"
     environment:
       - xpack.security.enabled=false
   
   # Postgres
   postgres:
-    container_name: postgres-chris-test
+    #container_name: postgres-chris-test
     build: postgres
     environment:
       POSTGRES_PASSWORD: postgres
