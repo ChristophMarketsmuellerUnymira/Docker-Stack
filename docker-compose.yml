@@ -4,7 +4,8 @@ services:
   # Liferay
   liferay:
     #container_name: liferay-chris-test
-    build: ./liferay
+    build: 
+      context: ./liferay
    # deploy:
    #   limits:
    #       memory: 1000M
@@ -22,7 +23,8 @@ services:
   # Elasticsearch
   elasticsearch:
     #container_name: elasticsearch-chris-test
-    build: ./elasticsearch
+    build: 
+     context: ./elasticsearch
     #deploy:
     #  limits:
     #      memory: 1000M
@@ -54,7 +56,8 @@ services:
   # Postgres
   postgres:
     #container_name: postgres-chris-test
-    build: ./postgres
+    build:
+      context: ./postgres
     environment:
       POSTGRES_PASSWORD: postgres
     #  context: ./postgres
