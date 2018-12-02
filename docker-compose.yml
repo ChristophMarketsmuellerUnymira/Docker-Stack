@@ -12,7 +12,7 @@ services:
       - "38085:8080"
    #   - "11311:11311"
     volumes:
-      - $(pwd)/liferay/mount:/etc/liferay/mount
+      - ./liferay/mount:/etc/liferay/mount
     environment:
       - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL=jdbc:postgresql://postgres:5432/lportal
       - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME=postgres
@@ -34,11 +34,11 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - $(pwd)/elasticsearch/data/:/usr/share/elasticsearch/data/
-      - $(pwd)/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - $(pwd)/elasticsearch/config/logging.yml:/usr/share/elasticsearch/config/logging.yml
-      - $(pwd)/elasticsearch/config/userdict_ja.txt:/usr/share/elasticsearch/config/userdict_ja.txt
-      - $(pwd)/elasticsearch/logs/:/var/log/elasticsearch/
+      - ./elasticsearch/data/:/usr/share/elasticsearch/data/
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/config/logging.yml:/usr/share/elasticsearch/config/logging.yml
+      - ./elasticsearch/config/userdict_ja.txt:/usr/share/elasticsearch/config/userdict_ja.txt
+      - ./elasticsearch/logs/:/var/log/elasticsearch/
     environment:
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - bootstrap.memory_lock=true
@@ -61,7 +61,7 @@ services:
     build: postgres
     environment:
       POSTGRES_PASSWORD: postgres
-    #  context: $(pwd)/postgres
+    #  context: ./postgres
    # ports:
    #   - "35432:5432"
   #  volumes:
